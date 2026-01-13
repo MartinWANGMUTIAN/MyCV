@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WANG MUTIAN (Martin) - 简历</title>
+  <meta name="description" content="WANG MUTIAN (Martin) 的个人简历网页" />
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.08);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --muted2: rgba(255,255,255,.55);
+      --line: rgba(255,255,255,.12);
+      --accent: #7dd3fc;
+      --accent2:#a78bfa;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+      --max: 1040px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f6f7fb;
+        --card: rgba(10,20,40,.05);
+        --card2: rgba(10,20,40,.07);
+        --text: rgba(10,20,40,.92);
+        --muted: rgba(10,20,40,.70);
+        --muted2: rgba(10,20,40,.55);
+        --line: rgba(10,20,40,.12);
+        --shadow: 0 18px 60px rgba(10,20,40,.12);
+      }
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB",
+                   "Microsoft YaHei", "Noto Sans CJK SC", "Segoe UI", Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 10% 0%, rgba(125,211,252,.20), transparent 60%),
+        radial-gradient(900px 500px at 90% 10%, rgba(167,139,250,.18), transparent 65%),
+        radial-gradient(900px 600px at 30% 110%, rgba(16,185,129,.10), transparent 60%),
+        var(--bg);
+      line-height:1.55;
+    }
+    a{ color:inherit; text-decoration:none; }
+    a:hover{ text-decoration:underline; text-underline-offset:3px; }
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:28px 18px 56px;
+    }
+
+    /* Top bar */
+    .top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      padding:18px;
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      box-shadow: var(--shadow);
+    }
+    .name{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-width: 260px;
+    }
+    .name h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing:.2px;
+      line-height:1.2;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      width: fit-content;
+      padding:6px 10px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .badge i{
+      width:10px; height:10px; border-radius:999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display:inline-block;
+    }
+
+    .contacts{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:flex-end;
+      align-items:center;
+      margin-top:2px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background: rgba(255,255,255,.05);
+      font-size:13px;
+      color:var(--muted);
+      transition: transform .08s ease, background .12s ease;
+      white-space:nowrap;
+    }
+    .chip:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.08);
+      text-decoration:none;
+    }
+    .chip b{ color:var(--text); font-weight:600; }
+
+    /* Layout */
+    .grid{
+      display:grid;
+      grid-template-columns: 280px 1fr;
+      gap:18px;
+      margin-top:18px;
+    }
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+      .contacts{ justify-content:flex-start; }
+    }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .card .hd h2{
+      margin:0;
+      font-size:14px;
+      letter-spacing:.8px;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+    .card .bd{
+      padding:14px 16px 16px;
+    }
+
+    .nav a{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.05);
+      margin-bottom:10px;
+      color:var(--text);
+      font-size:14px;
+    }
+    .nav a:hover{
+      background: rgba(255,255,255,.08);
+      text-decoration:none;
+    }
+    .nav small{ color:var(--muted2); }
+
+    .kv{
+      display:grid;
+      grid-template-columns: 90px 1fr;
+      gap:8px 10px;
+      font-size:14px;
+      color:var(--muted);
+    }
+    .kv div:nth-child(odd){ color:var(--muted2); }
+    .kv b{ color:var(--text); font-weight:600; }
+
+    .section{
+      margin-bottom:14px;
+      padding-bottom:14px;
+      border-bottom:1px dashed var(--line);
+    }
+    .section:last-child{
+      margin-bottom:0; padding-bottom:0; border-bottom:none;
+    }
+
+    .role{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:baseline;
+      justify-content:space-between;
+      margin:0 0 6px;
+    }
+    .role h3{
+      margin:0;
+      font-size:16px;
+      line-height:1.3;
+    }
+    .role .meta{
+      color:var(--muted);
+      font-size:13px;
+      white-space:nowrap;
+    }
+
+    ul{
+      margin:8px 0 0 18px;
+      padding:0;
+      color:var(--muted);
+    }
+    li{ margin:6px 0; }
+    .pillrow{ display:flex; flex-wrap:wrap; gap:8px; }
+    .pill{
+      font-size:12px;
+      color:var(--muted);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      padding:6px 10px;
+      border-radius:999px;
+    }
+    details{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      border-radius: 14px;
+      padding:10px 12px;
+      margin-top:10px;
+    }
+    summary{
+      cursor:pointer;
+      color:var(--text);
+      font-weight:600;
+      list-style:none;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    summary:after{
+      content:"▾";
+      float:right;
+      color:var(--muted);
+    }
+    details[open] summary:after{ content:"▴"; }
+
+    /* Print */
+    @media print{
+      body{ background:#fff; color:#111; }
+      .top, .card{ box-shadow:none; }
+      .chip, .nav a, details{ border-color:#ddd; }
+      a{ text-decoration:none; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="name">
+        <h1>WANG MUTIAN <span style="color:var(--muted); font-weight:600;">(Martin)</span></h1>
+        <div class="badge"><i></i><span>Business Intelligence & Data Analytics · Undergraduate (Year 3)</span></div>
+      </div>
+
+      <div class="contacts" aria-label="联系方式">
+        <a class="chip" href="tel:+8617631177461" title="点击拨打电话"><b>Phone</b><span>+86 17631177461</span></a>
+        <a class="chip" href="mailto:sandmwong@outlook.com" title="点击发送邮件"><b>Email</b><span>sandmwong@outlook.com</span></a>
+        <a class="chip" href="mailto:bc31061@um.edu.mo" title="点击发送教育邮箱"><b>Edu</b><span>bc31061@um.edu.mo</span></a>
+        <span class="chip" title="微信"><b>WeChat</b><span>MartinWong2023</span></span>
+      </div>
+    </header>
+
+    <main class="grid">
+      <!-- Left -->
+      <aside class="card">
+        <div class="hd"><h2>导航</h2></div>
+        <div class="bd nav">
+          <a href="#education"><span>教育背景</span><small>Education</small></a>
+          <a href="#internship"><span>实习经历</span><small>Internship</small></a>
+          <a href="#projects"><span>项目与竞赛</span><small>Projects</small></a>
+          <a href="#activities"><span>校内活动</span><small>Activities</small></a>
+        </div>
+
+        <div class="hd"><h2>概览</h2></div>
+        <div class="bd">
+          <div class="kv">
+            <div>学校</div><div><b>University of Macau</b></div>
+            <div>专业</div><div><b>Business Intelligence and Data Analytics</b></div>
+            <div>GPA</div><div><b>3.88 / 4.0</b></div>
+            <div>排名</div><div><b>3 / 82</b></div>
+            <div>IELTS</div><div><b>7.0</b></div>
+          </div>
+
+          <div style="height:12px"></div>
+          <div class="pillrow" aria-label="工具与技能标签（从简历经历推断）">
+            <span class="pill">Excel</span>
+            <span class="pill">Python</span>
+            <span class="pill">MIS / KPI</span>
+            <span class="pill">Data Cleaning</span>
+            <span class="pill">Data Analysis</span>
+          </div>
+          <div style="margin-top:10px; color:var(--muted2); font-size:12px;">
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right -->
+      <section class="card" aria-label="主要内容">
+        <div class="bd">
+          <!-- Education -->
+          <div class="section" id="education">
+            <div class="role">
+              <h3>教育背景 · University of Macau</h3>
+              <div class="meta">Undergraduate (Year 3)</div>
+            </div>
+            <div class="kv">
+              <div>Major</div><div><b>Business Intelligence and Data Analytics</b></div>
+              <div>GPA</div><div><b>3.88/4.0</b> <span style="color:var(--muted2)">| Ranking: 3/82</span></div>
+              <div>IELTS</div><div><b>7.0</b></div>
+            </div>
+
+            <details>
+              <summary>课程（点击展开）</summary>
+              <div style="margin-top:10px; color:var(--muted); font-size:14px;">
+                <b style="color:var(--text);">Major Courses</b>
+                <ul>
+                  <li>Principles of Microeconomic: A (4.0/4.0)</li>
+                  <li>Principles of Management: A (4.0/4.0)</li>
+                  <li>Principles of Accounting: A (4.0/4.0)</li>
+                  <li>Introduction to Business Intelligence: A- (3.7/4.0)</li>
+                  <li>Financial Management: A (4.0/4.0)</li>
+                  <li>Statistics and Data Analysis: A (4.0/4.0)</li>
+                  <li>Programming for Business Analytics: A (4.0/4.0)</li>
+                  <li>Database Management: A- (3.7/4.0)</li>
+                  <li>Analysis and Design of Information Systems: A- (3.7/4.0)</li>
+                  <li>Computer Networking for Business: A (4.0/4.0)</li>
+                  <li>Advanced Computer Programming: A (4.0/4.0)</li>
+                  <li>Principles of Marketing: A (4.0/4.0)</li>
+                </ul>
+
+                <b style="color:var(--text); display:block; margin-top:12px;">General Education Courses</b>
+                <ul>
+                  <li>Quantitative Reasoning for Business: A (4.0/4.0)</li>
+                  <li>Portuguese I – Introductory Portuguese: A (4.0/4.0)</li>
+                  <li>Macau and Chinese Civilization: A (4.0/4.0)</li>
+                  <li>Chinese Language and Culture: A- (3.7/4.0)</li>
+                  <li>Chinese Languages and Chinese Communities: A (4.0/4.0)</li>
+                  <li>Internet, Business and Society: A (4.0/4.0)</li>
+                  <li>Applied Ethics: A- (3.7/4.0)</li>
+                  <li>Foundations of Moral Values: A- (3.7/4.0)</li>
+                  <li>Law and Society: A- (3.7/4.0)</li>
+                  <li>Information Systems and Organizations: A- (3.7/4.0)</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <!-- Internship -->
+          <div class="section" id="internship">
+            <div class="role">
+              <h3>实习经历</h3>
+              <div class="meta">Internship Experience</div>
+            </div>
+
+            <div style="margin-top:10px;">
+              <div class="role">
+                <h3>Unionlife LTD. CO. · Risk Compliance and Regulation Enterprise Planning Intern</h3>
+                <div class="meta">May 2024 – June 2024</div>
+              </div>
+              <ul>
+                <li>参与分支机构层面：保险、银行、投资、催收四类任务的一线报送与处理。</li>
+                <li>通过 MIS 系统处理业务分析数据；围绕关键指标做定期分析，协助 28 家分支机构的 KPI 分析与绩效评估。</li>
+                <li>进行数据抽取、清洗与分析，并汇总业务状况与发展前景的发现。</li>
+                <li>使用 NBEV 等模型进行风险发展预测与产品发展趋势分析；使用 Excel、Python 做数据处理并向总部汇报。</li>
+              </ul>
+            </div>
+
+            <div style="margin-top:14px;">
+              <div class="role">
+                <h3>NORTHEAST SECURITIES · Assistant Wealth Manager</h3>
+                <div class="meta">June 2025</div>
+              </div>
+              <ul>
+                <li>参与柜台业务训练：开户流程、客户信息管理、资金划转等基础操作。</li>
+                <li>学习资产配置与组合管理策略，面向不同风险偏好进行适配。</li>
+                <li>学习投顾流程：客户风险评估、产品推荐、投顾系统使用。</li>
+                <li>掌握基金评价指标：Sharpe ratio、drawdown、volatility 等及适当性管理。</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Projects -->
+          <div class="section" id="projects">
+            <div class="role">
+              <h3>项目与竞赛</h3>
+              <div class="meta">Projects & Competitions</div>
+            </div>
+            <ul>
+              <li>Henry Fok Foundation Scholarship in Academic Year 2023/2024</li>
+              <li>HSBC/UM Macau Business Case Competition 2025：澳门赛区第 3 名</li>
+              <li>Faculty of Business Administration Dean’s Honor List</li>
+            </ul>
+          </div>
+
+          <!-- Activities -->
+          <div class="section" id="activities">
+            <div class="role">
+              <h3>校内活动</h3>
+              <div class="meta">University Activities</div>
+            </div>
+            <ul>
+              <li>Summer Exchange Program, BI Norwegian Business School (Norway)</li>
+              <li>Member of the Students’ Union of Business Intelligence and Data Analytics</li>
+              <li>Member of Model Business Competition Society of University of Macau Students’ Union</li>
+            </ul>
+          </div>
+
+          <div style="margin-top:14px; color:var(--muted2); font-size:12px;">
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
