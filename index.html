@@ -1,441 +1,1144 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>WANG MUTIAN (Martin) - 简历</title>
-  <meta name="description" content="WANG MUTIAN (Martin) 的个人简历网页" />
+  <title>WANG MUTIAN (Martin) · Portfolio CV</title>
+
   <style>
+    /* =========================
+       Theme
+       ========================= */
     :root{
-      --bg: #0b0f14;
-      --card: rgba(255,255,255,.06);
-      --card2: rgba(255,255,255,.08);
+      --bg:#070a0f;
+      --panel: rgba(255,255,255,.055);
+      --panel2: rgba(255,255,255,.085);
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.68);
-      --muted2: rgba(255,255,255,.55);
       --line: rgba(255,255,255,.12);
+
       --accent: #7dd3fc;
       --accent2:#a78bfa;
+
       --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --radius: 18px;
-      --max: 1040px;
+      --r: 18px;
+      --max: 1120px;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB",
+              "Microsoft YaHei", "Noto Sans CJK SC", "Segoe UI", Roboto, Arial, sans-serif;
+      --serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+
+      /* waves */
+      --waves-stroke: rgba(255,255,255,.35);
+      --waves-stroke2: rgba(255,255,255,.22);
+
+      /* effects */
+      --grid-ink: rgba(255,255,255,.05);
+      --scan-ink: rgba(0,0,0,.22);
     }
-    @media (prefers-color-scheme: light){
-      :root{
-        --bg:#f6f7fb;
-        --card: rgba(10,20,40,.05);
-        --card2: rgba(10,20,40,.07);
-        --text: rgba(10,20,40,.92);
-        --muted: rgba(10,20,40,.70);
-        --muted2: rgba(10,20,40,.55);
-        --line: rgba(10,20,40,.12);
-        --shadow: 0 18px 60px rgba(10,20,40,.12);
-      }
+    html[data-theme="light"]{
+      --bg:#f6f7fb;
+      --panel: rgba(10,20,40,.05);
+      --panel2: rgba(10,20,40,.07);
+      --text: rgba(10,20,40,.92);
+      --muted: rgba(10,20,40,.68);
+      --line: rgba(10,20,40,.12);
+      --shadow: 0 18px 60px rgba(10,20,40,.12);
+
+      --waves-stroke: rgba(10,20,40,.32);
+      --waves-stroke2: rgba(10,20,40,.18);
+
+      --grid-ink: rgba(10,20,40,.06);
+      --scan-ink: rgba(255,255,255,.65);
     }
 
     *{ box-sizing:border-box; }
     html{ scroll-behavior:smooth; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB",
-                   "Microsoft YaHei", "Noto Sans CJK SC", "Segoe UI", Roboto, Arial, sans-serif;
+      font-family: var(--sans);
       color:var(--text);
-      background:
-        radial-gradient(900px 500px at 10% 0%, rgba(125,211,252,.20), transparent 60%),
-        radial-gradient(900px 500px at 90% 10%, rgba(167,139,250,.18), transparent 65%),
-        radial-gradient(900px 600px at 30% 110%, rgba(16,185,129,.10), transparent 60%),
-        var(--bg);
-      line-height:1.55;
+      background: var(--bg);
+      line-height:1.6;
+      overflow-x:hidden;
     }
     a{ color:inherit; text-decoration:none; }
     a:hover{ text-decoration:underline; text-underline-offset:3px; }
+
+    /* =========================
+       Background layers
+       ========================= */
+    a-waves{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      z-index:0;
+      pointer-events:none;
+      opacity:.55;
+      filter: saturate(.9);
+    }
+    a-waves svg{ width:100%; height:100%; }
+    a-waves svg path{
+      fill:none;
+      stroke: var(--waves-stroke);
+      stroke-width: 1px;
+      vector-effect: non-scaling-stroke;
+    }
+
+
+    .bgGrid, .bgGrain, .bgVignette{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:1;
+    }
+    .bgGrid{
+      opacity:.22;
+      background-image:
+        linear-gradient(to right, var(--grid-ink) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-ink) 1px, transparent 1px),
+        repeating-linear-gradient(to bottom, var(--scan-ink) 0px, var(--scan-ink) 1px, transparent 3px, transparent 6px);
+      background-size: 44px 44px, 44px 44px, 100% 6px;
+      mix-blend-mode: overlay;
+    }
+    html[data-theme="light"] .bgGrid{ mix-blend-mode: multiply; }
+
+    .bgGrain{
+      opacity:.10;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+      mix-blend-mode: overlay;
+    }
+    .bgVignette{
+      background:
+        radial-gradient(1200px 700px at 15% 0%, rgba(125,211,252,.18), transparent 60%),
+        radial-gradient(1200px 800px at 92% 12%, rgba(167,139,250,.16), transparent 65%),
+        radial-gradient(900px 600px at 30% 110%, rgba(16,185,129,.10), transparent 60%),
+        radial-gradient(1400px 900px at 50% 50%, transparent 55%, rgba(0,0,0,.55) 100%);
+    }
+    html[data-theme="light"] .bgVignette{
+      background:
+        radial-gradient(1200px 700px at 15% 0%, rgba(125,211,252,.18), transparent 60%),
+        radial-gradient(1200px 800px at 92% 12%, rgba(167,139,250,.16), transparent 65%),
+        radial-gradient(900px 600px at 30% 110%, rgba(16,185,129,.10), transparent 60%),
+        radial-gradient(1400px 900px at 50% 50%, transparent 58%, rgba(255,255,255,.45) 100%);
+    }
+
     .wrap{
       max-width:var(--max);
       margin:0 auto;
-      padding:28px 18px 56px;
+      padding:20px 18px 64px;
+      position:relative;
+      z-index:2;
     }
 
-    /* Top bar */
-    .top{
+    /* =========================
+       Top bar
+       ========================= */
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0));
+      padding:10px 0 12px;
+    }
+    html[data-theme="light"] .topbar{
+      background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,0));
+    }
+    .navline{
       display:flex;
-      align-items:flex-start;
+      align-items:center;
       justify-content:space-between;
-      gap:16px;
-      padding:18px;
+      gap:12px;
       border:1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, var(--card2), var(--card));
+      border-radius:999px;
+      padding:10px 12px;
+      background: rgba(255,255,255,.05);
       box-shadow: var(--shadow);
     }
-    .name{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      min-width: 260px;
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      min-width: 220px;
     }
-    .name h1{
-      margin:0;
-      font-size:28px;
-      letter-spacing:.2px;
-      line-height:1.2;
-    }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      width: fit-content;
-      padding:6px 10px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.06);
-      border-radius:999px;
-      font-size:12px;
-      color:var(--muted);
-    }
-    .badge i{
+    .dot{
       width:10px; height:10px; border-radius:999px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       display:inline-block;
     }
+    .brand b{ font-weight:780; letter-spacing:.2px; }
+    .brand span{ color:var(--muted); font-size:13px; }
 
-    .contacts{
-      display:flex;
+    .nav{
+      display:flex; flex-wrap:wrap; gap:10px;
+      justify-content:center;
+    }
+    .nav a{
+      font-size:13px;
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid transparent;
+    }
+    .nav a:hover{
+      color:var(--text);
+      border-color:var(--line);
+      background: rgba(255,255,255,.05);
+      text-decoration:none;
+    }
+    .nav a[aria-current="true"]{
+      color:var(--text);
+      border-color:var(--line);
+      background: rgba(255,255,255,.07);
+    }
+
+    .actions{
+      display:flex; align-items:center; gap:10px; justify-content:flex-end;
+      min-width: 240px;
       flex-wrap:wrap;
-      gap:10px;
-      justify-content:flex-end;
-      align-items:center;
-      margin-top:2px;
     }
     .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .chip b{ color:var(--text); font-weight:680; }
+    button.toggle{
+      cursor:pointer;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color:var(--muted);
+      font-size:12px;
+      transition: transform .08s ease, background .12s ease;
+    }
+    button.toggle:hover{
+      color:var(--text);
+      background: rgba(255,255,255,.08);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 860px){
+      .navline{ flex-direction:column; align-items:stretch; border-radius: 18px; }
+      .actions{ min-width:auto; justify-content:flex-start; }
+      .brand{ min-width:auto; }
+      .nav{ justify-content:flex-start; }
+    }
+
+    /* =========================
+       Hero (font effects)
+       ========================= */
+    .hero{
+      margin-top:16px;
+      border:1px solid var(--line);
+      border-radius: var(--r);
+      background: linear-gradient(180deg, var(--panel2), var(--panel));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(900px 520px at 10% 10%, rgba(125,211,252,.10), transparent 60%),
+        radial-gradient(900px 520px at 90% 20%, rgba(167,139,250,.08), transparent 62%);
+      pointer-events:none;
+    }
+    .hero-inner{
+      position:relative;
+      z-index:1;
+      padding:22px 18px 18px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+      align-items:end;
+    }
+    .kicker{
+      display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .kicker .pill{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      padding:6px 10px;
+      border-radius:999px;
+      font-family: var(--mono);
+      letter-spacing:.2px;
+    }
+
+    .bigWrap{ position:relative; }
+    .big{
+      margin:10px 0 0;
+      font-family: var(--serif);
+      font-size: clamp(34px, 6vw, 74px);
+      letter-spacing: -0.9px;
+      line-height:1.01;
+      background: linear-gradient(90deg, rgba(255,255,255,.95), rgba(255,255,255,.78) 40%, rgba(255,255,255,.92));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      text-rendering: geometricPrecision;
+    }
+    .bigWrap::before,
+    .bigWrap::after{
+      content: attr(data-text);
+      position:absolute;
+      left:0; top:0;
+      font-family: var(--serif);
+      font-size: inherit;
+      line-height: inherit;
+      letter-spacing: inherit;
+      pointer-events:none;
+      opacity:.20;
+      white-space: pre-line;
+      filter: blur(.2px);
+    }
+    .bigWrap::before{ transform: translate(1px, 0); color: var(--accent); }
+    .bigWrap::after { transform: translate(-1px, 0); color: var(--accent2); }
+
+    .sub{
+      margin:10px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      max-width: 64ch;
+    }
+    .sub b{ color: var(--text); font-weight:700; }
+
+    .hero-right{
+      display:flex; flex-direction:column; gap:10px;
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+    }
+
+    /* =========================
+       MODIFIED POKER STYLES
+       (Blur + Anti-ghosting)
+       ========================= */
+    .poker-container {
+      position: relative;
+      width: 100%;
+      height: 200px; 
+      margin: 10px 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .p-card, .p-top {
+      position: absolute;
+      width: 150px;
+      height: 190px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #0f131a; 
+      background: linear-gradient(145deg, #181c25, #0a0d14);
+      padding: 14px;
+      transform-origin: bottom center;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+      text-align: left;
+      filter: blur(4px) brightness(0.6);
+      opacity: 0.7;
+      transition: transform 0.4s ease, filter 0.4s ease, opacity 0.4s ease, z-index 0.4s;
+    }
+
+    .p-card.active {
+      filter: blur(0) brightness(1);
+      opacity: 1;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+      background: linear-gradient(145deg, var(--panel2), var(--bg));
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .p-card .label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .p-card .val {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .p-top {
+      background: transparent;
+      transition: 0.2s ease;
+      cursor: pointer;
+      z-index: 1000;
+      border: none;
+      box-shadow: none;
+      filter: none;
+      opacity: 0; 
+    }
+
+    .p1 { transform: rotate(-10deg); z-index: 1; }
+    .p2 { transform: rotate(-5deg) translate(10px, -5px); z-index: 2; }
+    .p3 { transform: rotate(0deg) translate(20px, -10px); z-index: 3; }
+    .p4 { transform: rotate(5deg) translate(30px, -15px); z-index: 4; }
+    .p-top { transform: rotate(5deg) translate(30px, -15px); }
+
+    html[data-theme="light"] .p-card {
+      background: #f0f0f0;
+      border-color: rgba(0,0,0,0.1);
+      color: #333;
+    }
+    html[data-theme="light"] .p-card.active {
+      background: #fff;
+    }
+
+    @media (max-width: 860px){
+      .hero-inner{ grid-template-columns: 1fr; }
+      .bigWrap::before, .bigWrap::after{ display:none; }
+      .poker-container { height: 220px; } 
+    }
+
+    /* =========================
+       Sections
+       ========================= */
+    /* 修正跳转偏移，确保点击后标题可见 */
+    section.block{
+      margin-top:16px;
+      border:1px solid var(--line);
+      border-radius: var(--r);
+      background: linear-gradient(180deg, var(--panel2), var(--panel));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      scroll-margin-top: 100px;
+    }
+    .hd{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+    }
+    .hd h2{
+      margin:0;
+      letter-spacing:1.1px;
+      text-transform:uppercase;
+      font-size:13px;
+      color:var(--muted);
+      font-family: var(--mono);
+    }
+    .hd .hint{ color:var(--muted); font-size:12px; font-family: var(--mono); }
+    .bd{ padding:14px 16px 18px; }
+
+    .cols{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width: 860px){
+      .cols{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      padding:12px;
+    }
+    .card h3{ margin:0; font-size:16px; letter-spacing:.2px; }
+    .card .meta{ margin-top:6px; color:var(--muted); font-size:13px; }
+    .card ul{ margin:10px 0 0 18px; padding:0; color:var(--muted); }
+    .card li{ margin:7px 0; }
+    .quote{
+      font-size:14px;
+      color:var(--muted);
+      border-left:3px solid rgba(125,211,252,.5);
+      padding-left:12px;
+      margin:10px 0 0;
+    }
+
+    /* Work list + detail */
+    .work{
+      display:grid;
+      grid-template-columns: 1fr 1.05fr;
+      gap:14px;
+      align-items:start;
+    }
+    @media (max-width: 960px){
+      .work{ grid-template-columns: 1fr; }
+    }
+    .list{
+      border:1px solid var(--line);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(255,255,255,.04);
+    }
+    .item{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 12px;
+      border-bottom:1px solid var(--line);
+      cursor:pointer;
+      user-select:none;
+      transition: background .12s ease;
+    }
+    .item:last-child{ border-bottom:none; }
+    .item:hover{ background: rgba(255,255,255,.06); }
+    .item b{ font-weight:800; }
+    .item span{ color:var(--muted); font-size:12px; white-space:nowrap; font-family: var(--mono); }
+    .item[aria-selected="true"]{
+      background: rgba(255,255,255,.08);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+
+    .detail{
+      border:1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      padding:12px;
+    }
+    .detail h3{ margin:0; font-size:16px; }
+    .detail .meta{ margin-top:6px; color:var(--muted); font-size:13px; font-family: var(--mono); }
+    .detail ul{ margin:10px 0 0 18px; color:var(--muted); }
+    .tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .tag{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+      font-family: var(--mono);
+    }
+
+    details.collapse{
+      margin-top:12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      border-radius: 14px;
+      padding:10px 12px;
+    }
+    details.collapse summary{
+      cursor:pointer;
+      color:var(--text);
+      font-weight:720;
+      list-style:none;
+      font-family: var(--mono);
+    }
+    details.collapse summary::-webkit-details-marker{ display:none; }
+    details.collapse summary:after{
+      content:"▾";
+      float:right;
+      color:var(--muted);
+    }
+    details.collapse[open] summary:after{ content:"▴"; }
+
+    /* Contact */
+    .contactgrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width: 860px){
+      .contactgrid{ grid-template-columns: 1fr; }
+    }
+    .cta{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+    }
+    .cta a{
       display:inline-flex;
       align-items:center;
       gap:10px;
       padding:10px 12px;
       border:1px solid var(--line);
-      border-radius:999px;
-      background: rgba(255,255,255,.05);
-      font-size:13px;
-      color:var(--muted);
-      transition: transform .08s ease, background .12s ease;
-      white-space:nowrap;
-    }
-    .chip:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.08);
-      text-decoration:none;
-    }
-    .chip b{ color:var(--text); font-weight:600; }
-
-    /* Layout */
-    .grid{
-      display:grid;
-      grid-template-columns: 280px 1fr;
-      gap:18px;
-      margin-top:18px;
-    }
-    @media (max-width: 900px){
-      .grid{ grid-template-columns: 1fr; }
-      .contacts{ justify-content:flex-start; }
-    }
-
-    .card{
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, var(--card2), var(--card));
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .card .hd{
-      padding:14px 16px;
-      border-bottom:1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .card .hd h2{
-      margin:0;
-      font-size:14px;
-      letter-spacing:.8px;
-      text-transform:uppercase;
-      color:var(--muted);
-    }
-    .card .bd{
-      padding:14px 16px 16px;
-    }
-
-    .nav a{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:10px 12px;
-      border:1px solid var(--line);
       border-radius: 14px;
       background: rgba(255,255,255,.05);
-      margin-bottom:10px;
-      color:var(--text);
-      font-size:14px;
-    }
-    .nav a:hover{
-      background: rgba(255,255,255,.08);
-      text-decoration:none;
-    }
-    .nav small{ color:var(--muted2); }
-
-    .kv{
-      display:grid;
-      grid-template-columns: 90px 1fr;
-      gap:8px 10px;
-      font-size:14px;
       color:var(--muted);
+      width: fit-content;
+      font-family: var(--mono);
     }
-    .kv div:nth-child(odd){ color:var(--muted2); }
-    .kv b{ color:var(--text); font-weight:600; }
-
-    .section{
-      margin-bottom:14px;
-      padding-bottom:14px;
-      border-bottom:1px dashed var(--line);
-    }
-    .section:last-child{
-      margin-bottom:0; padding-bottom:0; border-bottom:none;
-    }
-
-    .role{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:baseline;
-      justify-content:space-between;
-      margin:0 0 6px;
-    }
-    .role h3{
-      margin:0;
-      font-size:16px;
-      line-height:1.3;
-    }
-    .role .meta{
-      color:var(--muted);
-      font-size:13px;
-      white-space:nowrap;
-    }
-
-    ul{
-      margin:8px 0 0 18px;
-      padding:0;
-      color:var(--muted);
-    }
-    li{ margin:6px 0; }
-    .pillrow{ display:flex; flex-wrap:wrap; gap:8px; }
-    .pill{
-      font-size:12px;
-      color:var(--muted);
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.05);
-      padding:6px 10px;
-      border-radius:999px;
-    }
-    details{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      border-radius: 14px;
-      padding:10px 12px;
-      margin-top:10px;
-    }
-    summary{
-      cursor:pointer;
-      color:var(--text);
-      font-weight:600;
-      list-style:none;
-    }
-    summary::-webkit-details-marker{ display:none; }
-    summary:after{
-      content:"▾";
-      float:right;
-      color:var(--muted);
-    }
-    details[open] summary:after{ content:"▴"; }
-
-    /* Print */
-    @media print{
-      body{ background:#fff; color:#111; }
-      .top, .card{ box-shadow:none; }
-      .chip, .nav a, details{ border-color:#ddd; }
-      a{ text-decoration:none; }
-    }
+    .cta a:hover{ color:var(--text); background: rgba(255,255,255,.08); text-decoration:none; }
+    .mono{ font-family: var(--mono); }
+    .tiny{ margin-top:12px; color:var(--muted); font-size:12px; font-family: var(--mono); }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <header class="top">
-      <div class="name">
-        <h1>WANG MUTIAN <span style="color:var(--muted); font-weight:600;">(Martin)</span></h1>
-        <div class="badge"><i></i><span>Business Intelligence & Data Analytics · Undergraduate (Year 3)</span></div>
-      </div>
+  <a-waves aria-hidden="true"><svg></svg></a-waves>
 
-      <div class="contacts" aria-label="联系方式">
-        <a class="chip" href="tel:+8617631177461" title="点击拨打电话"><b>Phone</b><span>+86 17631177461</span></a>
-        <a class="chip" href="mailto:sandmwong@outlook.com" title="点击发送邮件"><b>Email</b><span>sandmwong@outlook.com</span></a>
-        <a class="chip" href="mailto:bc31061@um.edu.mo" title="点击发送教育邮箱"><b>Edu</b><span>bc31061@um.edu.mo</span></a>
-        <span class="chip" title="微信"><b>WeChat</b><span>MartinWong2023</span></span>
+  <div class="bgVignette" aria-hidden="true"></div>
+  <div class="bgGrid" aria-hidden="true"></div>
+  <div class="bgGrain" aria-hidden="true"></div>
+
+  <div class="topbar">
+    <div class="wrap">
+      <div class="navline" role="navigation" aria-label="站点导航">
+        <div class="brand">
+          <span class="dot" aria-hidden="true"></span>
+          <div>
+            <div><b>WANG MUTIAN</b> <span>(Martin)</span></div>
+            <div class="mono" style="font-size:12px; color:var(--muted);">Business Intelligence · Data Analytics</div>
+          </div>
+        </div>
+
+        <div class="nav" id="nav">
+          <a href="#about">About</a>
+          <a href="#path">Path</a>
+          <a href="#work">Internship</a>
+          <a href="#highlights">Highlights</a>
+          <a href="#contact">Contact</a>
+        </div>
+
+        <div class="actions">
+          <span class="chip"><b>Phone</b> <span class="mono">+86 17631177461</span></span>
+          <button class="toggle" id="toggleTheme" type="button" aria-label="切换对比度">Change contrast</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <header class="hero" id="top">
+      <div class="hero-inner">
+        <div>
+          <div class="kicker">
+            <span class="pill">University of Macau</span>
+            <span class="pill">Undergraduate (Year 3)</span>
+            <span class="pill">GPA 3.86/4.0 · Rank 3/82</span>
+            <span class="pill">IELTS 7.0</span>
+          </div>
+
+          <div class="bigWrap">
+            <h1 class="big">
+              Martin, <br/>
+              WANG MUTIAN, <br/>
+              王牧天<br/>
+            </h1>
+          </div>
+
+          <p class="sub">
+            Based in <b>University of Macau</b> Major in <b>Business Intelligence and Data Analytics</b>。
+            做过: 数据处理(Excel / Python) → 分析与汇报；也做过风险预测与产品趋势分析等工作。
+          </p>
+        </div>
+
+        <div class="hero-right" aria-label="快速信息">
+          <div class="poker-container">
+            <div class="p-card p1">
+              <div class="label">Major</div>
+              <div class="val">Business & <br>Data Analytics</div>
+            </div>
+            <div class="p-card p2">
+              <div class="label">Focus</div>
+              <div class="val">Data Analysing <br>\ Processing</div>
+            </div>
+            <div class="p-card p3">
+              <div class="label">Tools</div>
+              <div class="val">Excel · Python <br>· Spark</div>
+            </div>
+            <div class="p-card p4">
+              <div class="label">Open to</div>
+              <div class="val">Internship <br>Opportunities</div>
+            </div>
+            <div class="p-top" onclick="pokerLogic.move()"></div>
+          </div>
+
+          <div class="mono" style="color:var(--muted); font-size:12px;">
+            Email: <a href="mailto:sandmwong@outlook.com">sandmwong@outlook.com</a><br/>
+            Edu: <a href="mailto:bc31061@um.edu.mo">bc31061@um.edu.mo</a><br/>
+            WeChat: MartinWong2023
+          </div>
+        </div>
       </div>
     </header>
 
-    <main class="grid">
-      <!-- Left -->
-      <aside class="card">
-        <div class="hd"><h2>导航</h2></div>
-        <div class="bd nav">
-          <a href="#education"><span>教育背景</span><small>Education</small></a>
-          <a href="#internship"><span>实习经历</span><small>Internship</small></a>
-          <a href="#projects"><span>项目与竞赛</span><small>Projects</small></a>
-          <a href="#activities"><span>校内活动</span><small>Activities</small></a>
-        </div>
-
-        <div class="hd"><h2>概览</h2></div>
-        <div class="bd">
-          <div class="kv">
-            <div>学校</div><div><b>University of Macau</b></div>
-            <div>专业</div><div><b>Business Intelligence and Data Analytics</b></div>
-            <div>GPA</div><div><b>3.88 / 4.0</b></div>
-            <div>排名</div><div><b>3 / 82</b></div>
-            <div>IELTS</div><div><b>7.0</b></div>
+    <section class="block" id="about">
+      <div class="hd">
+        <h2>About</h2>
+      </div>
+      <div class="bd">
+        <div class="cols">
+          <div class="card">
+            <h3>In Summarry</h3>
+            <div class="meta">主修 Business Intelligence and Data Analytics, 擅长把业务指标和数据处理串起来: 抽取→清洗→分析→汇报。</div>
           </div>
 
-          <div style="height:12px"></div>
-          <div class="pillrow" aria-label="工具与技能标签">
-            <span class="pill">Excel</span>
-            <span class="pill">Python</span>
-            <span class="pill">MIS / KPI</span>
-            <span class="pill">Data Cleaning</span>
-            <span class="pill">Data Analysis</span>
-          </div>
-          <div style="margin-top:10px; color:var(--muted2); font-size:12px;">
-          </div>
-        </div>
-      </aside>
-
-      <!-- Right -->
-      <section class="card" aria-label="主要内容">
-        <div class="bd">
-          <!-- Education -->
-          <div class="section" id="education">
-            <div class="role">
-              <h3>教育背景 · University of Macau</h3>
-              <div class="meta">Undergraduate (Year 3)</div>
-            </div>
-            <div class="kv">
-              <div>Major</div><div><b>Business Intelligence and Data Analytics</b></div>
-              <div>GPA</div><div><b>3.86/4.0</b> <span style="color:var(--muted2)">| Ranking: 3/82</span></div>
-              <div>IELTS</div><div><b>7.0</b></div>
-            </div>
-
-            <details>
-              <summary>课程（点击展开）</summary>
-              <div style="margin-top:10px; color:var(--muted); font-size:14px;">
-                <b style="color:var(--text);">Major Courses</b>
-                <ul>
-                  <li>Principles of Microeconomic: A (4.0/4.0)</li>
-                  <li>Principles of Management: A (4.0/4.0)</li>
-                  <li>Principles of Accounting: A (4.0/4.0)</li>
-                  <li>Introduction to Business Intelligence: A- (3.7/4.0)</li>
-                  <li>Financial Management: A (4.0/4.0)</li>
-                  <li>Statistics and Data Analysis: A (4.0/4.0)</li>
-                  <li>Programming for Business Analytics: A (4.0/4.0)</li>
-                  <li>Database Management: A- (3.7/4.0)</li>
-                  <li>Analysis and Design of Information Systems: A- (3.7/4.0)</li>
-                  <li>Computer Networking for Business: A (4.0/4.0)</li>
-                  <li>Advanced Computer Programming: A (4.0/4.0)</li>
-                  <li>Principles of Marketing: A (4.0/4.0)</li>
-                  <li>Programming Science: Learned in BI Norweigian Business School</li>
-                  <li>Big Data Management: A- (3.7/4.0)</li>
-                  <li>Quantitative Decision Analysis: A- (3.7/4.0)</li>
-                  <li>Business Project Management: A (4.0/4.0)</li>
-                </ul>
-
-                <b style="color:var(--text); display:block; margin-top:12px;">General Education Courses</b>
-                <ul>
-                  <li>Quantitative Reasoning for Business: A (4.0/4.0)</li>
-                  <li>Portuguese I – Introductory Portuguese: A (4.0/4.0)</li>
-                  <li>Macau and Chinese Civilization: A (4.0/4.0)</li>
-                  <li>Chinese Language and Culture: A- (3.7/4.0)</li>
-                  <li>Chinese Languages and Chinese Communities: A (4.0/4.0)</li>
-                  <li>Internet, Business and Society: A (4.0/4.0)</li>
-                  <li>Applied Ethics: A- (3.7/4.0)</li>
-                  <li>Foundations of Moral Values: A- (3.7/4.0)</li>
-                  <li>Law and Society: A- (3.7/4.0)</li>
-                  <li>Information Systems and Organizations: A- (3.7/4.0)</li>
-                  <li>Economics of Everyday Life: A- (3.7/4.0)</li>
-                </ul>
-              </div>
+          <div class="card">
+            <h3>教育信息</h3>
+            <div class="meta">University of Macau · Undergraduate (Year 3) · GPA 3.88/4.0 · Rank 3/82 · IELTS 7.0</div>
+            <details class="collapse">
+              <summary>课程（展开）</summary>
+              <ul>
+                <li>Programming for Business Analytics: A (4.0/4.0)</li>
+                <li>Statistics and Data Analysis: A (4.0/4.0)</li>
+                <li>Database Management: A- (3.7/4.0)</li>
+                <li>Financial Management: A (4.0/4.0)</li>
+                <li>…以及 Microeconomics / Accounting / MIS 等</li>
+              </ul>
             </details>
           </div>
+        </div>
+      </div>
+    </section>
 
-          <!-- Internship -->
-          <div class="section" id="internship">
-            <div class="role">
-              <h3>实习经历</h3>
-              <div class="meta">Internship Experience</div>
+    <section class="block" id="path">
+      <div class="hd">
+        <h2>Path</h2>
+      </div>
+      <div class="bd">
+        <div class="cols">
+          <div class="card">
+            <h3>校园</h3>
+            <div class="meta">Scholarship & Competition</div>
+            <ul>
+              <li>Summer Exchange Program, BI Norwegian Business School (Norway)</li>
+              <li>Students' Union (BI & Data Analytics) Member</li>
+              <li>Model Business Competition Society Member</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>风格</h3>
+            <ul>
+              <li>定义指标：把问题落到 KPI/关键指标</li>
+              <li>数据准备：抽取 + 清洗（Excel / Python）</li>
+              <li>分析输出：定期分析 + 结论汇总 + 汇报</li>
+              <li>必要时上模型：做风险/趋势预测（如 NBEV）</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="work">
+      <div class="hd">
+        <h2>Internship</h2>
+      </div>
+      <div class="bd">
+        <div class="work">
+          <div class="list" id="workList" role="listbox" aria-label="经历列表">
+            <div class="item" role="option" tabindex="0" aria-selected="true" data-key="unionlife">
+              <div>
+                <b>Unionlife LTD. CO.</b>
+                <div style="color:var(--muted); font-size:12px;">Risk Compliance & Regulation · Enterprise Planning Intern</div>
+              </div>
+              <span>May 2024 - Jun 2024</span>
             </div>
 
-            <div style="margin-top:10px;">
-              <div class="role">
-                <h3>Unionlife LTD. CO. · Risk Compliance and Regulation Enterprise Planning Intern</h3>
-                <div class="meta">May 2024 – June 2024</div>
+            <div class="item" role="option" tabindex="0" aria-selected="false" data-key="nes">
+              <div>
+                <b>NORTHEAST SECURITIES</b>
+                <div style="color:var(--muted); font-size:12px;">Assistant Wealth Manager</div>
               </div>
-              <ul>
-                <li>参与分支机构层面：保险、银行、投资、催收四类任务的一线报送与处理。</li>
-                <li>通过 MIS 系统处理业务分析数据；围绕关键指标做定期分析，协助 28 家分支机构的 KPI 分析与绩效评估。</li>
-                <li>进行数据抽取、清洗与分析，并汇总业务状况与发展前景的发现。</li>
-                <li>使用 NBEV 等模型进行风险发展预测与产品发展趋势分析；使用 Excel、Python 做数据处理并向总部汇报。</li>
-              </ul>
-            </div>
-
-            <div style="margin-top:14px;">
-              <div class="role">
-                <h3>NORTHEAST SECURITIES · Assistant Wealth Manager</h3>
-                <div class="meta">June 2025</div>
-              </div>
-              <ul>
-                <li>参与柜台业务训练：开户流程、客户信息管理、资金划转等基础操作。</li>
-                <li>学习资产配置与组合管理策略，面向不同风险偏好进行适配。</li>
-                <li>学习投顾流程：客户风险评估、产品推荐、投顾系统使用。</li>
-                <li>掌握基金评价指标：Sharpe ratio、drawdown、volatility 等及适当性管理。</li>
-              </ul>
+              <span>Jun 2025</span>
             </div>
           </div>
 
-          <!-- Projects -->
-          <div class="section" id="projects">
-            <div class="role">
-              <h3>项目与竞赛</h3>
-              <div class="meta">Projects & Competitions</div>
-            </div>
+          <div class="detail" id="workDetail" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="highlights">
+      <div class="hd">
+        <h2>Highlights</h2>
+      </div>
+      <div class="bd">
+        <div class="cols">
+          <div class="card">
+            <h3>Projects & Competitions</h3>
             <ul>
-              <li>Henry Fok Foundation Scholarship in Academic Year 2023/2024</li>
-              <li>HSBC/UM Macau Business Case Competition 2025：澳门赛区第 3 名</li>
+              <li>Henry Fok Foundation Scholarship (Academic Year 2023/2024)</li>
+              <li>Bank of China Scholarship (Academic Year 2025/2026)</li>
+              <li>HSBC/UM Macau Business Case Competition 2025: 3rd place (Macau Region)</li>
               <li>Faculty of Business Administration Dean’s Honor List</li>
             </ul>
           </div>
 
-          <!-- Activities -->
-          <div class="section" id="activities">
-            <div class="role">
-              <h3>校内活动</h3>
-              <div class="meta">University Activities</div>
-            </div>
+          <div class="card">
+            <h3>结果类型</h3>
             <ul>
-              <li>Summer Exchange Program, BI Norwegian Business School (Norway)</li>
-              <li>Member of the Students’ Union of Business Intelligence and Data Analytics</li>
-              <li>Member of Model Business Competition Society of University of Macau Students’ Union</li>
+              <li>分支机构 KPI 分析与绩效评估支持(28 家分支)</li>
+              <li>MIS 数据处理、定期关键指标分析</li>
+              <li>数据抽取/清洗/分析 + 业务状态与前景总结</li>
+              <li>风险发展预测与产品趋势分析（含 NBEV 等模型）</li>
             </ul>
           </div>
+        </div>
+      </div>
+    </section>
 
-          <div style="margin-top:14px; color:var(--muted2); font-size:12px;">
+    <section class="block" id="contact">
+      <div class="hd">
+        <h2>Contact</h2>
+      </div>
+      <div class="bd">
+        <div class="contactgrid">
+          <div class="cta">
+            <b style="font-size:16px;">快速联系</b>
+            <a href="mailto:sandmwong@outlook.com">✉ sandmwong@outlook.com</a>
+            <a href="mailto:bc31061@um.edu.mo">✉ bc31061@um.edu.mo</a>
+            <a href="tel:+8617631177461">☎ +86 17631177461</a>
+            <div class="tiny">WeChat: MartinWong2023</div>
+          </div>
+
+          <div class="cta">
+            <b style="font-size:16px;">Who am I?</b>
+            <div style="color:var(--muted); font-size:14px;">
+              我是 University of Macau 的 Business Intelligence and Data Analytics 本科三年级学生（GPA 3.86/4.0，专业排名 3/82），有 MIS/KPI 分析、数据清洗与建模预测（Excel/Python）相关实习经历，正在寻找数据分析/商业分析方向实习机会。
+            </div>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
+
+    <div class="tiny" style="text-align:center; margin-top:16px;">
+      Thank you for visiting!  ©Martin, Wang Mutian
+    </div>
   </div>
+
+  <script>
+    // ===== Theme toggle (contrast) =====
+    (function(){
+      const root = document.documentElement;
+      const btn = document.getElementById('toggleTheme');
+      const saved = localStorage.getItem('theme');
+      if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
+
+      btn.addEventListener('click', () => {
+        const cur = root.getAttribute('data-theme') || 'dark';
+        const next = cur === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+      });
+    })();
+
+    // ===== Work list -> detail panel =====
+    (function(){
+      const data = {
+        unionlife: {
+          title: "Unionlife LTD. CO.",
+          meta: "Risk Compliance and Regulation · Enterprise Planning Intern · May 2024 – June 2024",
+          bullets: [
+            "参与分支机构层面保险、银行、投资、催收四类任务的一线报送与处理。",
+            "通过 MIS 系统处理业务分析数据；围绕关键指标定期分析，协助 28 家分支机构的 KPI 分析与绩效评估。",
+            "进行数据抽取、清洗与分析，并汇总业务状况与发展前景的发现。",
+            "使用 NBEV 等模型做风险发展预测与产品趋势分析；用 Excel、Python 做处理并向总部汇报。"
+          ],
+          tags: ["MIS", "KPI", "Data Extraction", "Data Cleaning", "Excel", "Python", "Forecasting"]
+        },
+        nes: {
+          title: "NORTHEAST SECURITIES",
+          meta: "Assistant Wealth Manager · June 2025",
+          bullets: [
+            "参与柜台业务训练：开户流程、客户信息管理、资金划转等基础操作。",
+            "学习资产配置与组合管理策略，面向不同风险偏好进行适配。",
+            "学习投顾流程：客户风险评估、产品推荐、投顾系统使用。",
+            "掌握基金评价指标：Sharpe ratio、drawdown、volatility 等及适当性管理。"
+          ],
+          tags: ["Asset Allocation", "Portfolio", "Investment Advisory", "Funds Metrics", "Suitability"]
+        }
+      };
+
+      const list = document.getElementById('workList');
+      const detail = document.getElementById('workDetail');
+
+      function render(key){
+        const d = data[key];
+        if(!d) return;
+        detail.innerHTML = `
+          <h3>${d.title}</h3>
+          <div class="meta">${d.meta}</div>
+          <ul>${d.bullets.map(x => `<li>${x}</li>`).join('')}</ul>
+          <div class="tags">${d.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+        `;
+      }
+      function selectItem(el){
+        [...list.querySelectorAll('.item')].forEach(x => x.setAttribute('aria-selected', 'false'));
+        el.setAttribute('aria-selected', 'true');
+        render(el.dataset.key);
+      }
+
+      list.addEventListener('click', (e) => {
+        const item = e.target.closest('.item');
+        if(item) selectItem(item);
+      });
+      list.addEventListener('keydown', (e) => {
+        const items = [...list.querySelectorAll('.item')];
+        const cur = items.findIndex(x => x.getAttribute('aria-selected') === 'true');
+        if(e.key === 'ArrowDown'){
+          e.preventDefault();
+          const next = items[Math.min(items.length - 1, cur + 1)];
+          next.focus(); selectItem(next);
+        }
+        if(e.key === 'ArrowUp'){
+          e.preventDefault();
+          const prev = items[Math.max(0, cur - 1)];
+          prev.focus(); selectItem(prev);
+        }
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          const focused = document.activeElement.closest('.item');
+          if(focused) selectItem(focused);
+        }
+      });
+
+      render('unionlife');
+    })();
+
+    // ===== Nav active state on scroll (FIXED LOGIC) =====
+    (function(){
+      const links = [...document.querySelectorAll('#nav a')];
+      const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            links.forEach(a => a.removeAttribute('aria-current'));
+            const id = '#' + entry.target.id;
+            const hit = links.find(a => a.getAttribute('href') === id);
+            if(hit) hit.setAttribute('aria-current', 'true');
+          }
+        });
+      }, {
+        // 关键修复：将监听区域上移至屏幕顶部（Top -15% 到 -70%）
+        // 这样当您点击 "Path" 置顶时，它就会被立即检测到，而不会误判为下方的 Internship
+        rootMargin: "-15% 0px -70% 0px", 
+        threshold: 0.01 
+      });
+
+      targets.forEach(t => io.observe(t));
+      // links[0].setAttribute('aria-current', 'true'); // 可选：初始高亮
+    })();
+
+    // =========================
+    // Wavy lines component integration
+    // =========================
+class AWaves extends HTMLElement {
+  connectedCallback() {
+    this.svg = this.querySelector('svg');
+    this.mouse = { x:0,y:0,lx:0,ly:0,sx:0,sy:0,v:0,vs:0,a:0 };
+    this.lines = [];
+    this.paths = [];
+    this.bindEvents();
+    this.setSize();
+    this.setLines();
+    requestAnimationFrame(this.tick.bind(this));
+  }
+
+  bindEvents() {
+    const onResize = () => {
+      this.setSize();
+      this.setLines();
+    };
+
+    window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener('mousemove', (e) => {
+      this.updateMousePosition(e.clientX, e.clientY);
+    }, { passive: true });
+    window.addEventListener('touchmove', (e) => {
+      if (!e.touches || !e.touches[0]) return;
+      this.updateMousePosition(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    window.addEventListener('scroll', () => {
+      this.bounding = this.getBoundingClientRect();
+    }, { passive: true });
+  }
+
+  setSize() {
+    this.bounding = this.getBoundingClientRect();
+    this.svg.style.width = `${this.bounding.width}px`;
+    this.svg.style.height = `${this.bounding.height}px`;
+  }
+
+  setLines() {
+    const { width, height } = this.bounding;
+
+    this.lines = [];
+    this.paths.forEach((path) => path.remove());
+    this.paths = [];
+
+    const xGap = 10;
+    const yGap = 32;
+
+    const oWidth = width + 200;
+    const oHeight = height + 30;
+
+    const totalLines = Math.ceil(oWidth / xGap);
+    const totalPoints = Math.ceil(oHeight / yGap);
+
+    const xStart = (width - xGap * totalLines) / 2;
+    const yStart = (height - yGap * totalPoints) / 2;
+
+    for (let i = 0; i <= totalLines; i++) {
+      const points = [];
+      for (let j = 0; j <= totalPoints; j++) {
+        points.push({
+          x: xStart + xGap * i,
+          y: yStart + yGap * j,
+          cursor: { x: 0, y: 0, vx: 0, vy: 0 },
+        });
+      }
+      this.lines.push(points);
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      this.svg.appendChild(path);
+      this.paths.push(path);
+    }
+  }
+
+  updateMousePosition(clientX, clientY) {
+    const { mouse } = this;
+    mouse.x = clientX - this.bounding.left;
+    mouse.y = clientY - this.bounding.top;
+  }
+
+  movePoints() {
+    const { lines, mouse } = this;
+
+    lines.forEach((points) => {
+      points.forEach((p) => {
+        const dx = p.x - mouse.sx;
+        const dy = p.y - mouse.sy;
+        const d = Math.hypot(dx, dy);
+        const l = Math.max(175, mouse.vs);
+
+        if (d < l) {
+          const f = 1 - d / l;
+          p.cursor.vx += Math.cos(mouse.a) * f * mouse.vs * 0.08;
+          p.cursor.vy += Math.sin(mouse.a) * f * mouse.vs * 0.08;
+        }
+
+        p.cursor.vx += (0 - p.cursor.x) * 0.005;
+        p.cursor.vy += (0 - p.cursor.y) * 0.005;
+
+        p.cursor.vx *= 0.925;
+        p.cursor.vy *= 0.925;
+
+        p.cursor.x += p.cursor.vx * 2;
+        p.cursor.y += p.cursor.vy * 2;
+
+        p.cursor.x = Math.min(100, Math.max(-100, p.cursor.x));
+        p.cursor.y = Math.min(100, Math.max(-100, p.cursor.y));
+      });
+    });
+  }
+
+  moved(point, withCursorForce = true) {
+    let x = point.x + (withCursorForce ? point.cursor.x : 0);
+    let y = point.y + (withCursorForce ? point.cursor.y : 0);
+    x = Math.round(x * 10) / 10;
+    y = Math.round(y * 10) / 10;
+    return { x, y };
+  }
+
+  drawLines() {
+    const { lines, paths } = this;
+
+    lines.forEach((points, lIndex) => {
+      let p1 = this.moved(points[0], false);
+      let d = `M ${p1.x} ${p1.y}`;
+
+      points.forEach((p, pIndex) => {
+        const isLast = pIndex === points.length - 1;
+        p = this.moved(p, !isLast);
+        d += `L ${p.x} ${p.y}`;
+      });
+
+      paths[lIndex].setAttribute('d', d);
+    });
+  }
+
+  tick() {
+    const { mouse } = this;
+
+    mouse.sx += (mouse.x - mouse.sx) * 0.1;
+    mouse.sy += (mouse.y - mouse.sy) * 0.1;
+
+    const dx = mouse.x - mouse.lx;
+    const dy = mouse.y - mouse.ly;
+    const d = Math.hypot(dx, dy);
+
+    mouse.v = d;
+    mouse.vs += (d - mouse.vs) * 0.1;
+    mouse.vs = Math.min(100, mouse.vs);
+
+    mouse.lx = mouse.x;
+    mouse.ly = mouse.y;
+
+    mouse.a = Math.atan2(dy, dx);
+
+    this.movePoints();
+    this.drawLines();
+
+    requestAnimationFrame(this.tick.bind(this));
+  }
+}
+
+customElements.define('a-waves', AWaves);
+
+    // =========================
+    // MODIFIED POKER LOGIC
+    // =========================
+    const pokerLogic = {
+      poker_eles: {},
+      transform_datas: [
+        "rotate(-10deg)",
+        "rotate(-5deg) translate(10px, -5px)",
+        "rotate(0deg) translate(20px, -10px)",
+        "rotate(5deg) translate(30px, -15px)"
+      ],
+      init() {
+        this.poker_eles = [...document.querySelectorAll('.p-card')];
+        this.poker_eles.forEach((obj, index) => {
+          obj.nums = index;
+        });
+        this.updateActiveState();
+      },
+      updateActiveState() {
+        this.poker_eles.forEach((ele) => {
+          if (ele.nums === 3) {
+            ele.classList.add('active');
+          } else {
+            ele.classList.remove('active');
+          }
+        });
+      },
+      move() {
+        this.poker_eles.forEach((ele) => {
+          let nums = ele.nums;
+          if (nums + 1 >= 4) {
+            nums = 0;
+            ele.style.transition = "";
+          } else {
+            nums += 1;
+            ele.style.transition = "transform 0.4s ease, filter 0.4s ease, opacity 0.4s ease";
+          }
+          ele.style.zIndex = nums + 1;
+          ele.style.transform = this.transform_datas[nums];
+          ele.nums = nums;
+        });
+        this.updateActiveState();
+      }
+    };
+    pokerLogic.init();
+  </script>
 </body>
 </html>
