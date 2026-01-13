@@ -903,30 +903,128 @@
       render('unionlife');
     })();
 
-    // ===== Nav active state on scroll (FIXED LOGIC) =====
-    (function(){
-      const links = [...document.querySelectorAll('#nav a')];
-      const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+// ===== Smart anchor scroll: 短内容居中，长内容正常，靠近底部贴底 =====
+(function(){
+  const nav = document.getElementById('nav');
+  const topbar = document.querySelector('.topbar');
+  if(!nav || !topbar) return;
 
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if(entry.isIntersecting){
-            links.forEach(a => a.removeAttribute('aria-current'));
-            const id = '#' + entry.target.id;
-            const hit = links.find(a => a.getAttribute('href') === id);
-            if(hit) hit.setAttribute('aria-current', 'true');
-          }
-        });
-      }, {
-        // 关键修复：将监听区域上移至屏幕顶部（Top -15% 到 -70%）
-        // 这样当您点击 "Path" 置顶时，它就会被立即检测到，而不会误判为下方的 Internship
-        rootMargin: "-15% 0px -70% 0px", 
-        threshold: 0.01 
-      });
+  function smartScrollTo(target){
+    const headerH = topbar.getBoundingClientRect().height;
+    const gap = 12;                   // 让内容离顶部稍微有点呼吸空间
+    const headerOffset = headerH + gap;
 
-      targets.forEach(t => io.observe(t));
-      // links[0].setAttribute('aria-current', 'true'); // 可选：初始高亮
-    })();
+    const rect = target.getBoundingClientRect();
+    const targetTop = window.pageYOffset + rect.top;
+    const targetH = target.offsetHeight;
+
+    const viewportH = window.innerHeight;
+    const availableH = viewportH - headerOffset;
+
+    const maxScroll = document.documentElement.scrollHeight - viewportH;
+
+    let desiredTop;
+
+    if (targetH <= availableH) {
+      // 1) 有空余空间：把整个 section 在“除去顶部栏后的可视区”里居中
+      const centerTop = targetTop - headerOffset - (availableH - targetH) / 2;
+
+      // 2) 但如果居中会需要滚到页面底部之外（典型：Contact 在最下面）
+      //    就改成“贴底显示”，让它落在屏幕下方
+      const bottomTop = targetTop + targetH - viewportH;
+
+      desiredTop = (centerTop > maxScroll) ? bottomTop : centerTop;
+    } else {
+      // 内容很长：从顶部（顶栏下方）开始看
+      desiredTop = targetTop - headerOffset;
+    }
+
+    // 安全夹紧
+    desiredTop = Math.max(0, Math.min(maxScroll, desiredTop));
+
+    window.scrollTo({ top: desiredTop, behavior: 'smooth' });
+  }
+
+  nav.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if(!a) return;
+
+    const hash = a.getAttribute('href');
+    const target = document.querySelector(hash);
+    if(!target) return;
+
+    e.preventDefault();
+    smartScrollTo(target);
+
+    // 更新地址栏 hash，但不触发浏览器默认跳转
+    history.pushState(null, '', hash);
+  });
+})();
+
+// ===== Nav active state on scroll (CENTER-BASED) =====
+(function(){
+  const nav = document.getElementById('nav');
+  const topbar = document.querySelector('.topbar');
+  const links = [...document.querySelectorAll('#nav a[href^="#"]')];
+  const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  if(!links.length || !sections.length) return;
+
+  function headerOffset(){
+    const h = topbar ? topbar.getBoundingClientRect().height : 0;
+    return h + 12; // 和你跳转逻辑一致：顶栏高度 + 间距
+  }
+
+  function setActive(hash){
+    links.forEach(a => a.removeAttribute('aria-current'));
+    const hit = links.find(a => a.getAttribute('href') === hash);
+    if(hit) hit.setAttribute('aria-current', 'true');
+  }
+
+  function updateActive(){
+    const off = headerOffset();
+    // “焦点线”：在除去顶栏后的可视区中间
+    const focusY = window.scrollY + off + (window.innerHeight - off) * 0.33;
+
+    let best = sections[0];
+
+    for(const sec of sections){
+      const top = sec.offsetTop;
+      const bottom = top + sec.offsetHeight;
+
+      // 焦点线落在哪个 section，就选哪个
+      if(focusY >= top && focusY < bottom){
+        best = sec;
+        break;
+      }
+      // 否则选最后一个在焦点线之上的 section
+      if(top <= focusY) best = sec;
+    }
+
+    setActive('#' + best.id);
+  }
+
+  // 滚动节流：一帧更新一次
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      updateActive();
+      ticking = false;
+    });
+  }, { passive:true });
+
+  window.addEventListener('resize', updateActive, { passive:true });
+
+  // 点击时立即高亮（不等滚动回调）
+  nav.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if(a) setActive(a.getAttribute('href'));
+  });
+
+  updateActive(); // 初始高亮
+})();
+
 
     // =========================
     // Wavy lines component integration
