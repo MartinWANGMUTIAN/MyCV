@@ -396,13 +396,25 @@
     .p4 { transform: rotate(5deg) translate(30px, -15px); z-index: 4; }
     .p-top { transform: rotate(5deg) translate(30px, -15px); }
 
+    /* --- 修改部分：浅色模式下的 Poker 样式 --- */
     html[data-theme="light"] .p-card {
-      background: #f0f0f0;
+      background: rgba(240, 240, 240, 0.85); /* 稍微增加一点通透感 */
       border-color: rgba(0,0,0,0.1);
       color: #333;
     }
+    
     html[data-theme="light"] .p-card.active {
-      background: #fff;
+      background: rgba(255, 255, 255, 0.60); /* 半透明白底 */
+      backdrop-filter: blur(16px);            /* 磨砂效果 */
+      -webkit-backdrop-filter: blur(16px);
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    }
+
+    /* === 新增：加深浅色模式下的标签文字颜色 === */
+    html[data-theme="light"] .p-card .label {
+      color: #0284c7; /* 深天蓝色 */
+      font-weight: 700; /* 加粗 */
     }
 
     @media (max-width: 860px){
@@ -522,27 +534,70 @@
       font-family: var(--mono);
     }
 
-    details.collapse{
-      margin-top:12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
+/* =========================
+       折叠面板 (JS辅助动画版)
+       ========================= */
+    details.collapse {
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .04);
       border-radius: 14px;
-      padding:10px 12px;
+      overflow: hidden; 
+      transition: background 0.2s;
     }
-    details.collapse summary{
-      cursor:pointer;
-      color:var(--text);
-      font-weight:720;
-      list-style:none;
+
+    details.collapse:hover {
+      background: rgba(255, 255, 255, .06);
+    }
+
+    details.collapse summary {
+      cursor: pointer;
+      color: var(--text);
+      font-weight: 720;
+      list-style: none;
       font-family: var(--mono);
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between; 
+      align-items: center;
     }
-    details.collapse summary::-webkit-details-marker{ display:none; }
-    details.collapse summary:after{
-      content:"▾";
-      float:right;
-      color:var(--muted);
+
+    details.collapse summary::-webkit-details-marker { display: none; }
+
+    /* 箭头旋转动画 */
+    details.collapse summary::after {
+      content: "▾";
+      color: var(--muted);
+      font-size: 14px;
+      margin-left: 10px;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: center center;
     }
-    details.collapse[open] summary:after{ content:"▴"; }
+
+    details.collapse[open] summary::after {
+      transform: rotate(-180deg);
+      color: var(--accent);
+    }
+
+    /* 内容区域：默认样式 */
+    details.collapse ul {
+      margin: 0;
+      padding: 0 12px 12px 30px;
+      color: var(--muted);
+      overflow: hidden;
+      
+      /* 核心：我们会通过 JS 动态改变 height 和 opacity */
+      height: 0; 
+      opacity: 0;
+      transition: height 0.3s ease, opacity 0.3s ease;
+      will-change: height, opacity;
+    }
+    
+    /* 当 details 处于打开状态时，默认样式 (会被 JS 覆盖，作为兜底) */
+    details.collapse[open] ul {
+      height: auto;
+      opacity: 1;
+    }
 
     /* Contact */
     .contactgrid{
@@ -1237,6 +1292,92 @@ customElements.define('a-waves', AWaves);
       }
     };
     pokerLogic.init();
+
+    // ===== Smooth Collapse Animation =====
+    (function(){
+      class Accordion {
+        constructor(el) {
+          this.el = el;
+          this.summary = el.querySelector('summary');
+          this.content = el.querySelector('ul');
+          this.animation = null;
+          this.isClosing = false;
+          this.isExpanding = false;
+          this.summary.addEventListener('click', (e) => this.onClick(e));
+        }
+
+        onClick(e) {
+          e.preventDefault(); // 阻止浏览器默认的瞬间切换
+          this.el.style.overflow = 'hidden';
+
+          if (this.isClosing || !this.el.open) {
+            this.open();
+          } else if (this.isExpanding || this.el.open) {
+            this.close();
+          }
+        }
+
+        open() {
+          this.el.open = true;
+          window.requestAnimationFrame(() => this.expand());
+        }
+
+        expand() {
+          this.isExpanding = true;
+          // 计算展开后的高度
+          const startHeight = `${this.el.offsetHeight}px`;
+          const summaryHeight = `${this.summary.offsetHeight}px`;
+          
+          // 获取内容真实高度
+          // 先设为 auto 获取高度，再设回 0 做动画
+          this.content.style.height = 'auto'; 
+          const contentHeight = this.content.scrollHeight;
+          this.content.style.height = '0px';
+          this.content.style.opacity = '0';
+          
+          // 强制重绘
+          void this.content.offsetWidth;
+
+          // 开始动画
+          this.content.style.height = contentHeight + 'px';
+          this.content.style.opacity = '1';
+
+          // 动画结束后清理内联样式
+          setTimeout(() => {
+            this.isExpanding = false;
+            this.content.style.height = null; // 恢复为 auto
+            this.content.style.opacity = null;
+            this.el.style.overflow = null;
+          }, 300); // 对应 CSS transition 时间
+        }
+
+        close() {
+          this.isClosing = true;
+          
+          // 1. 固定当前高度，防止跳变
+          const contentHeight = this.content.scrollHeight;
+          this.content.style.height = contentHeight + 'px';
+          this.content.style.opacity = '1';
+          
+          // 强制重绘
+          void this.content.offsetWidth;
+
+          // 2. 设为 0 触发动画
+          this.content.style.height = '0px';
+          this.content.style.opacity = '0';
+
+          // 3. 动画结束后真正关闭 open 属性
+          setTimeout(() => {
+            this.el.open = false;
+            this.isClosing = false;
+            this.content.style.height = null;
+            this.content.style.opacity = null;
+          }, 300);
+        }
+      }
+
+      document.querySelectorAll('details.collapse').forEach(el => new Accordion(el));
+    })();
   </script>
 </body>
 </html>
